@@ -1,0 +1,210 @@
+===================
+Commas
+===================
+
+package foo
+
+import "path/to/pkg"
+import name "path/to/pkg"
+
+foo: [
+	0 // legal JSON
+]
+
+bar: [
+	0,
+	1,
+	2,
+	3
+]
+
+---
+
+(source_file
+  (package_clause (package_name (identifier)))
+  (import_decl
+    (import_spec (import_path (import_location))))
+  (import_decl
+    (import_spec
+      (package_name (identifier))
+      (import_path (import_location))))
+  (field
+    (label (label_name (identifier)))
+    (list
+      (number)
+      (comment)))
+  (field
+    (label (label_name (identifier)))
+    (list
+      (number)
+      (number)
+      (number)
+      (number))))
+
+===================
+Comp
+===================
+
+for x, y in {a: 1, b: 2} {
+  "\(x)": y 
+}
+
+z: [for x in [1, 2, 3] { x }]
+
+---
+
+(source_file
+  (comprehension 
+    (for_clause
+      (identifier)
+      (identifier)
+      (struct
+        (field 
+          (label (label_name (identifier)))
+          (number))
+        (field
+          (label (label_name (identifier)))
+          (number))))
+    (struct
+      (field
+        (label (label_name (interpolation (identifier))))
+        (identifier))))
+  (field
+    (label (label_name (identifier)))
+    (list
+      (comprehension
+        (for_clause
+          (identifier)
+          (list
+            (number)
+            (number)
+            (number)))
+        (struct (identifier))))))
+
+===================
+Data
+===================
+
+package hello
+
+who: "World"
+
+---
+
+(source_file
+  (package_clause (package_name (identifier)))
+  (field
+    (label (label_name (identifier)))
+    (string)))
+
+===================
+Hello
+===================
+
+package hello
+
+command: echo: {
+    task: echo: {
+        kind:   "exec"
+        cmd:    "echo \(message)"
+        stdout: string
+    }
+
+    task: display: {
+        kind: "print"
+        text: task.echo.stdout
+    }
+}
+
+---
+
+(source_file
+  (package_clause (package_name (identifier)))
+  (field
+    (label (label_name (identifier)))
+    (label (label_name (identifier)))
+    (struct
+      (field 
+        (label (label_name (identifier)))
+        (label (label_name (identifier)))
+        (struct
+          (field 
+            (label (label_name (identifier)))
+            (string))
+          (field
+            (label (label_name (identifier)))
+            (string (interpolation (identifier))))
+          (field 
+            (label (label_name (identifier)))
+            (identifier))))
+      (field
+        (label (label_name (identifier)))
+        (label (label_name (identifier)))
+        (struct
+          (field 
+            (label (label_name (identifier)))
+            (string))
+          (field
+            (label (label_name (identifier)))
+            (identifier)
+            (selector
+              (identifier))
+            (selector
+              (identifier))))))))
+
+===================
+Import
+===================
+
+package foo
+
+import (
+	"time.com/now"
+)
+
+
+foo: {
+	bar: 3.4
+}
+
+"a b c": [1, 2Gi, 3M]
+
+---
+
+(source_file
+  (package_clause (package_name (identifier)))
+  (import_decl
+    (import_spec (import_path (import_location))))
+  (field
+    (label (label_name (identifier)))
+    (struct
+      (field
+        (label (label_name (identifier)))
+        (number))))
+  (field
+    (label (label_name))
+    (list
+      (number)
+      (number)
+      (number))))
+
+===================
+Test
+===================
+
+import "math"
+
+foo: 1
+bar: "baz"
+
+---
+
+(source_file
+  (import_decl
+    (import_spec (import_path (import_location))))
+  (field
+    (label (label_name (identifier)))
+    (number))
+  (field
+    (label (label_name (identifier)))
+    (string)))

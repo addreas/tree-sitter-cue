@@ -1,0 +1,71 @@
+===================
+Lists
+===================
+
+[
+  345,
+  10.1,
+  10,
+  -10,
+  null,
+  true,
+  false,
+  { "stuff": "good" }
+]
+
+---
+
+(source_file (list
+  (number)
+  (number)
+  (number)
+  (number)
+  (null)
+  (true)
+  (false)
+  (struct 
+    (field 
+      (label (label_name))
+      (string)))))
+
+=====================
+String content
+=====================
+
+[
+  "",
+  "abc",
+  "def\n",
+  "ghi\t",
+  "jkl\f"
+]
+
+----
+
+(source_file
+  (list
+    (string)
+    (string)
+    (string)
+    (string)
+    (string)))
+
+================================
+Top-level numbers
+================================
+
+-1
+
+---
+
+(source_file (number))
+
+================================
+Top-level null
+================================
+
+null
+
+---
+
+(source_file (null))

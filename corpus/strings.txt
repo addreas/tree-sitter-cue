@@ -1,0 +1,58 @@
+===================
+Simple string
+===================
+
+"hello \(world)"
+
+---
+
+(source_file (string (interpolation (identifier))))
+
+===================
+Simple bytes
+===================
+
+'hello \(world)'
+
+---
+
+(source_file (string (interpolation (identifier))))
+
+===================
+Multi line string
+===================
+
+"""
+hello \(world)
+"""
+
+---
+
+(source_file (string (interpolation (identifier))))
+
+===================
+Multi line bytes
+===================
+
+'''
+hello \(world)
+'''
+
+---
+
+(source_file (string (interpolation (identifier))))
+
+
+===================
+Multi interpolation
+===================
+
+"\(hello) \(world)"
+
+---
+
+(source_file
+  (string
+    (interpolation (identifier))
+    (interpolation (identifier))))
+

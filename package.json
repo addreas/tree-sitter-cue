@@ -1,0 +1,19 @@
+{
+  "name": "tree-sitter-cue",
+  "version": "1.0.0",
+  "main": "bindings/node",
+  "scripts": {
+    "generate": "tree-sitter generate",
+    "test": "tree-sitter generate && tree-sitter test"
+  },
+  "dependencies": {
+    "nan": "^2.15.0"
+  },
+  "devDependencies": {
+    "tree-sitter-cli": "^0.20.1"
+  },
+  "tree-sitter": [{
+    "scope": "source.cue",
+    "file-types": ["cue"]
+  }]
+}

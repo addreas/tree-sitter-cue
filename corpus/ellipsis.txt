@@ -1,0 +1,72 @@
+===================
+Open list
+===================
+
+[1, 2, ...]
+
+---
+
+(source_file
+  (list
+    (number)
+    (number)
+    (ellipsis)))
+
+===================
+Open Def
+===================
+
+#D: {
+	a: string
+	...
+}
+
+---
+
+(source_file
+  (field
+    (label (label_name (identifier)))
+    (struct
+      (field
+        (label (label_name (identifier)))
+        (identifier))
+      (ellipsis))))
+
+===================
+Open int list
+===================
+
+[1, 2, ...int]
+
+---
+
+(source_file
+  (list
+    (number)
+    (number)
+    (ellipsis (identifier))))
+
+===================
+Open struct list
+===================
+
+[...{a: string}]
+
+---
+
+(source_file 
+  (list
+    (ellipsis (struct
+      (field 
+	    (label (label_name (identifier)))
+	    (identifier))))))
+
+===================
+Open alias list
+===================
+
+[...aa]
+
+---
+
+(source_file (list (ellipsis (identifier))))
