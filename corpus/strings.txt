@@ -2,57 +2,135 @@
 Simple string
 ===================
 
-"hello \(world)"
+"hello, \(w.world)"
 
 ---
 
-(source_file (string (interpolation (identifier))))
+(source_file
+  (string (interpolation
+    (identifier)
+    (selector (identifier)))))
 
 ===================
 Simple bytes
 ===================
 
-'hello \(world)'
+'hello, \(w.world)!'
 
 ---
 
-(source_file (string (interpolation (identifier))))
+(source_file
+  (string (interpolation
+    (identifier)
+    (selector (identifier)))))
 
 ===================
 Multi line string
 ===================
 
 """
-hello \(world)
+hello, \(w.world)!
 """
 
 ---
 
-(source_file (string (interpolation (identifier))))
+(source_file
+  (string (interpolation
+    (identifier)
+    (selector (identifier)))))
 
 ===================
 Multi line bytes
 ===================
 
-'''
-hello \(world)
-'''
+#'''
+hello, \#(w.world)!
+'''#
 
 ---
 
-(source_file (string (interpolation (identifier))))
-
+(source_file
+  (string (string (interpolation
+    (identifier)
+    (selector (identifier))))))
 
 ===================
 Multi interpolation
 ===================
 
-"\(hello) \(world)"
+"\(hello), \(w.world)!"
 
 ---
 
 (source_file
   (string
     (interpolation (identifier))
-    (interpolation (identifier))))
+    (interpolation
+      (identifier)
+      (selector (identifier)))))
 
+===================
+Complicated strings
+===================
+
+test: {
+  simple: "hello, \(w.world)"
+  multi: """
+    before
+    hello, \(w.world)
+    after
+    """
+}
+
+---
+
+
+(source_file
+  (field
+    (label (label_name (identifier)))
+    (struct
+      (field
+        (label (label_name (identifier)))
+        (string
+          (interpolation
+            (identifier)
+            (selector (identifier)))))
+      (field
+        (label (label_name (identifier)))
+        (string
+          (interpolation
+            (identifier)
+            (selector (identifier))))))))
+
+===================
+Complicated bytes
+===================
+
+test: {
+  simple: 'hello, \(w.world)'
+  multi: '''
+    before
+    hello, \(w.world)
+    after
+    '''
+}
+
+---
+
+
+(source_file
+  (field
+    (label (label_name (identifier)))
+    (struct
+      (field
+        (label (label_name (identifier)))
+        (string
+          (interpolation
+            (identifier)
+            (selector (identifier)))))
+      (field
+        (label (label_name (identifier)))
+        (string
+          (interpolation
+            (identifier)
+            (selector (identifier))))))))

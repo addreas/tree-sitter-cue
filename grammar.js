@@ -198,6 +198,8 @@ module.exports = grammar({
       return token.immediate(choice(/[^\n]/, little_u_value, big_u_value, escaped_char))
     },
 
+    _newline: $ => token.immediate("\n"),
+
     _simple_string_lit: $ => seq(`"`, repeat(choice($._unicode_value, $.interpolation)), `"`),
 
     interpolation: $ => seq("\\", repeat(`#`), "(", $._expression, ")"),
@@ -209,8 +211,18 @@ module.exports = grammar({
       let byte_value    = token.immediate(choice(octal_byte_value, hex_byte_value))
 
       let simple_bytes_lit = seq(`'`, repeat(choice($._unicode_value, $.interpolation, byte_value)), `'`)
-      let multiline_string_lit = seq(`"""`, "\n", repeat(choice($._unicode_value, $.interpolation, "\n")), "\n",`"""`)
-      let multiline_bytes_lit = seq(`'''`, "\n", repeat(choice($._unicode_value, $.interpolation, byte_value, "\n")), "\n",`'''`)
+      let multiline_string_lit = seq(
+        `"""`,
+        $._newline,
+        repeat(choice($._unicode_value, $.interpolation, $._newline)),
+        `"""`
+      )
+      let multiline_bytes_lit = seq(
+        `'''`,
+        $._newline,
+        repeat(choice($._unicode_value, $.interpolation, byte_value, $._newline)),
+        `'''`
+      )
 
       return choice(
          $._simple_string_lit,
@@ -274,6 +286,7 @@ module.exports = grammar({
         '/'
       )
     )),
+
     _kw_builtin_function: $ => choice(
       "len",
       "close",
