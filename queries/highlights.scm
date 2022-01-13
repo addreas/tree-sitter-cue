@@ -1,10 +1,14 @@
+(comment) @comment
 
-(identifier) @variable
+(string) @string
+
+(number) @number
 
 [
   "len"
   "close"
   "or"
+  "and"
   "quo"
   "rem"
   "div"
@@ -38,15 +42,10 @@
   "float6"
 ] @constant.builtin
 
-(comment) @comment
-
-(string) @string
-
-(number) @number
-
 (interpolation
-  "\\" "(" @punctuation.special
-  ")" @punctuation.special) @embedded
+  "\\" @punctuation.special
+  "("  @punctuation.special
+  ")"  @punctuation.special) @embedded
 
 [
   "+"
@@ -96,3 +95,5 @@
   "if"
   "let"
 ] @keyword
+
+(identifier) @variable

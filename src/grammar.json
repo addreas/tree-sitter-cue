@@ -2193,6 +2193,10 @@
         },
         {
           "type": "STRING",
+          "value": "and"
+        },
+        {
+          "type": "STRING",
           "value": "or"
         },
         {

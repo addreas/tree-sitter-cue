@@ -1277,6 +1277,10 @@
     "named": false
   },
   {
+    "type": "and",
+    "named": false
+  },
+  {
     "type": "bool",
     "named": false
   },

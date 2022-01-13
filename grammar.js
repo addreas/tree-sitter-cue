@@ -290,6 +290,7 @@ module.exports = grammar({
     _kw_builtin_function: $ => choice(
       "len",
       "close",
+      "and",
       "or",
       "quo",
       "rem",
