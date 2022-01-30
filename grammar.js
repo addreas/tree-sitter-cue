@@ -149,7 +149,7 @@ module.exports = grammar({
     // binary_op  = "|" | "&" | "||" | "&&" | "==" | rel_op | add_op | mul_op  .
     // add_op     = "+" | "-" .
     // mul_op     = "*" | "/" .
-    
+
     // Precedence    Operator
     //     7             *  /
     //     6             +  -
@@ -283,14 +283,7 @@ module.exports = grammar({
 
     // https://github.com/tree-sitter/tree-sitter-javascript/blob/master/grammar.js    
     // http://stackoverflow.com/questions/13014947/regex-to-match-a-c-style-multiline-comment/36328890#36328890
-    comment: $ => token(prec(-1, choice(
-      seq('//', /.*/, '\n'),
-      seq(
-        '/*',
-        /[^*]*\*+([^/*][^*]*\*+)*/,
-        '/'
-      )
-    ))),
+    comment: $ => token(prec(-1, choice(seq('//', /.*/, '\n')))),
 
     _kw_builtin_function: $ => choice(
       "len",
