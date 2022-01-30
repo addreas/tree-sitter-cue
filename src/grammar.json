@@ -1027,8 +1027,11 @@
                 "value": "*"
               },
               {
-                "type": "STRING",
-                "value": "/"
+                "type": "IMMEDIATE_TOKEN",
+                "content": {
+                  "type": "STRING",
+                  "value": "/"
+                }
               }
             ]
           }
@@ -2209,8 +2212,16 @@
                   "value": ".*"
                 },
                 {
-                  "type": "STRING",
-                  "value": "\n"
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "STRING",
+                      "value": "\n"
+                    },
+                    {
+                      "type": "BLANK"
+                    }
+                  ]
                 }
               ]
             }

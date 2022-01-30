@@ -6,12 +6,13 @@ number: [
 urls: [
   // Hello
   "https://cuelang.org/",
-  // Good Bye
   "http://\(100 + 20 + 7).0.0.1/",
+  // Good Bye
 ]
 
 // It's all the same
 links: "https://cuelang.org/": [
   "/docs", // But also different
   "https://github.com/cue-lang/cue/releases"
+  // It's complicated
 ]
