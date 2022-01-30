@@ -16,6 +16,10 @@
           "named": true
         },
         {
+          "type": "bytes",
+          "named": true
+        },
+        {
           "type": "false",
           "named": true
         },
@@ -76,6 +80,25 @@
       "types": [
         {
           "type": "identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "bytes",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "bytes",
+          "named": true
+        },
+        {
+          "type": "interpolation",
           "named": true
         }
       ]
@@ -145,6 +168,10 @@
         },
         {
           "type": "bottom",
+          "named": true
+        },
+        {
+          "type": "bytes",
           "named": true
         },
         {
@@ -219,6 +246,10 @@
           "named": true
         },
         {
+          "type": "bytes",
+          "named": true
+        },
+        {
           "type": "false",
           "named": true
         },
@@ -290,6 +321,10 @@
           "named": true
         },
         {
+          "type": "bytes",
+          "named": true
+        },
+        {
           "type": "false",
           "named": true
         },
@@ -354,6 +389,10 @@
         },
         {
           "type": "bottom",
+          "named": true
+        },
+        {
+          "type": "bytes",
           "named": true
         },
         {
@@ -482,6 +521,10 @@
           "named": true
         },
         {
+          "type": "bytes",
+          "named": true
+        },
+        {
           "type": "false",
           "named": true
         },
@@ -546,6 +589,10 @@
         },
         {
           "type": "bottom",
+          "named": true
+        },
+        {
+          "type": "bytes",
           "named": true
         },
         {
@@ -616,6 +663,10 @@
           "named": true
         },
         {
+          "type": "bytes",
+          "named": true
+        },
+        {
           "type": "false",
           "named": true
         },
@@ -675,15 +726,15 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": true,
-      "required": false,
+      "multiple": false,
+      "required": true,
       "types": [
         {
           "type": "identifier",
           "named": true
         },
         {
-          "type": "interpolation",
+          "type": "simple_string",
           "named": true
         }
       ]
@@ -703,6 +754,10 @@
         },
         {
           "type": "bottom",
+          "named": true
+        },
+        {
+          "type": "bytes",
           "named": true
         },
         {
@@ -770,6 +825,10 @@
         },
         {
           "type": "bottom",
+          "named": true
+        },
+        {
+          "type": "bytes",
           "named": true
         },
         {
@@ -866,13 +925,43 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": true,
-      "required": false,
+      "multiple": false,
+      "required": true,
       "types": [
         {
           "type": "identifier",
           "named": true
         },
+        {
+          "type": "simple_string",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "simple",
+    "named": false,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "interpolation",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "simple_string",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
         {
           "type": "interpolation",
           "named": true
@@ -894,6 +983,10 @@
         },
         {
           "type": "bottom",
+          "named": true
+        },
+        {
+          "type": "bytes",
           "named": true
         },
         {
@@ -965,6 +1058,10 @@
         },
         {
           "type": "bottom",
+          "named": true
+        },
+        {
+          "type": "bytes",
           "named": true
         },
         {
@@ -1079,6 +1176,10 @@
         },
         {
           "type": "bottom",
+          "named": true
+        },
+        {
+          "type": "bytes",
           "named": true
         },
         {

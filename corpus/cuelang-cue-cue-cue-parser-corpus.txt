@@ -67,7 +67,7 @@ z: [for x in [1, 2, 3] { x }]
           (number))))
     (struct
       (field
-        (label (label_name (interpolation (identifier))))
+        (label (label_name (simple_string (interpolation (identifier)))))
         (identifier))))
   (field
     (label (label_name (identifier)))
@@ -182,7 +182,7 @@ foo: {
         (label (label_name (identifier)))
         (number))))
   (field
-    (label (label_name))
+    (label (label_name (simple_string)))
     (list
       (number)
       (number)

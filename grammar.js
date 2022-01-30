@@ -4,7 +4,7 @@ module.exports = grammar({
   extras: $ => [$.comment, /\s/],
 
   supertypes: $ => [],
-  
+
   inline: $ => [
     $._declaration,
     $._attr_tokens,
@@ -17,9 +17,8 @@ module.exports = grammar({
     $._rel_op,
     $._clauses,
     $._start_clause,
-    $._simple_string_lit,
   ],
-  
+
   word: $ => $.identifier,
 
   rules: {
@@ -30,23 +29,23 @@ module.exports = grammar({
       repeat($.import_decl),
       repeat($._declaration)
     ),
-    
+
     // PackageClause  = "package" PackageName .
     package_clause: $ => seq("package", $.package_name),
     // PackageName    = identifier .
-    package_name: $ => $.identifier,
+    package_name:   $ => $.identifier,
 
     // ImportDecl       = "import" ( ImportSpec | "(" { ImportSpec "," } ")" ) .
-    import_decl: $ => seq("import", choice($.import_spec, seq("(", repeat(seq($.import_spec, optional(","))), ")"))), // TODO: EBNF doens not contain optional comma
+    import_decl:     $ => seq("import", choice($.import_spec, seq("(", repeat(seq($.import_spec, optional(","))), ")"))), // TODO: EBNF doens not contain optional comma
     // ImportSpec       = [ PackageName ] ImportPath .
-    import_spec: $ => seq(optional($.package_name), $.import_path),
+    import_spec:     $ => seq(optional($.package_name), $.import_path),
     // ImportLocation   = { unicode_value } .
-    import_location: $ => repeat1($._unicode_value),
+    import_location: $ => repeat1(choice(/[^\n"]/, $._unicode_value)),
     // ImportPath       = `"` ImportLocation [ ":" identifier ] `"` .    
-    import_path: $ => seq(`"`, $.import_location, optional(seq(":", $.identifier)), `"`),
+    import_path:     $ => seq(`"`, $.import_location, optional(seq(":", $.identifier)), `"`),
 
     // StructLit       = "{" { Declaration "," } "}" .
-    struct: $ => seq("{", repeat(seq($._declaration, optional(","))), "}"),
+    struct:       $ => seq("{", repeat(seq($._declaration, optional(","))), "}"),
     // Declaration     = Field | Ellipsis | Embedding | LetClause | attribute .
     _declaration: $ => prec(1, choice( // TODO: verify
       $.field,
@@ -56,23 +55,23 @@ module.exports = grammar({
       $.attribute
     )),
     // Ellipsis        = "..." [ Expression ] .
-    ellipsis: $ => prec.left(seq("...", optional($._expression))), // TODO: verify
+    ellipsis:     $ => prec.left(seq("...", optional($._expression))), // TODO: verify
     // Embedding       = Comprehension | AliasExpr .
-    _embedding: $ => prec.left(choice($.comprehension, $._alias_expr)), // TODO: verify
+    _embedding:   $ => prec.left(choice($.comprehension, $._alias_expr)), // TODO: verify
     // Field           = Label ":" { Label ":" } AliasExpr { attribute } .
-    field: $ => prec.left(seq($.label, ":", repeat(seq($.label, ":")), $._alias_expr, repeat($.attribute))), // TODO: verify
+    field:        $ => prec.left(seq($.label, ":", repeat(seq($.label, ":")), $._alias_expr, repeat($.attribute))), // TODO: verify
     // Label           = [ identifier "=" ] LabelExpr .
-    label: $ => seq(optional(seq($.identifier, "=")), $._label_expr),
+    label:        $ => seq(optional(seq($.identifier, "=")), $._label_expr),
     // LabelExpr       = LabelName [ "?" ] | "[" AliasExpr "]" .
-    _label_expr: $ => choice(
+    _label_expr:  $ => choice(
       seq($.label_name, optional("?")),
       seq("[", $._alias_expr, "]")
     ),
     // LabelName       = identifier | simple_string_lit  .
-    label_name: $ => choice($.identifier, $._simple_string_lit),
-    
+    label_name: $ => choice($.identifier, $.simple_string),
+
     // attribute       = "@" identifier "(" attr_tokens ")" .
-    attribute: $ => seq("@", $.identifier, "(", $._attr_tokens, ")"),
+    attribute:    $ => seq("@", $.identifier, "(", $._attr_tokens, ")"),
     // attr_tokens     = { attr_token |
     //                     "(" attr_tokens ")" |
     //                     "[" attr_tokens "]" |
@@ -84,13 +83,13 @@ module.exports = grammar({
       seq("{", $._attr_token, "}"),
     )),
     // attr_token      = /* any token except '(', ')', '[', ']', '{', or '}' */
-    _attr_token: $ => /[^\(\)\{\}\[\]]/,
-    
+    _attr_token:  $ => /[^\(\)\{\}\[\]]/,
+
     // AliasExpr  = [ identifier "=" ] Expression .
-    _alias_expr: $ => prec.right(seq(optional(seq($.identifier, "=")), $._expression)),
-    
+    _alias_expr:  $ => prec.right(seq(optional(seq($.identifier, "=")), $._expression)),
+
     // ListLit       = "[" [ ElementList [ "," ] ] "]" .
-    list: $ => seq("[", optional(seq($._element_list, optional(","))), "]"),
+    list:          $ => seq("[", optional(seq($._element_list, optional(","))), "]"),
     // ElementList   = Ellipsis | Embedding { "," Embedding } [ "," Ellipsis ] .
     _element_list: $ => prec.right(choice( // TODO: verify
       $.ellipsis,
@@ -98,56 +97,55 @@ module.exports = grammar({
     )),
 
     // Operand     = Literal | OperandName | "(" Expression ")" .
-    _operand: $ => choice($._literal, $._operand_name, seq("(", $._expression, ")")),
+    _operand:      $ => choice($._literal, $._operand_name, seq("(", $._expression, ")")),
     // OperandName = identifier | QualifiedIdent .
     _operand_name: $ => prec(1, choice($.identifier, $._qualified_ident)), // TODO: verify
     // Literal     = BasicLit | ListLit | StructLit .
     // BasicLit    = int_lit | float_lit | string_lit | null_lit | bool_lit | bottom_lit .
-    _literal: $ => choice(
-      choice(
-        $.number,
-        $.string,
-        $.null,
-        $._bool_lit,
-        $.bottom,
-      ),
+    _literal:      $ => choice(
+      $.number,
+      $.string,
+      $.bytes,
+      $.null,
+      $._bool_lit,
+      $.bottom,
       $.list,
       $.struct
     ),
-    
+
     // QualifiedIdent = PackageName "." identifier .
     _qualified_ident: $ => seq($.package_name, ".", $.identifier),
-    
+
     // PrimaryExpr =
     //   Operand |
     //   PrimaryExpr Selector |
     //   PrimaryExpr Index |
     //   PrimaryExpr Slice |
     //   PrimaryExpr Arguments .
-    _primary_expr: $ =>  choice(
+    _primary_expr: $ => choice(
       $._operand,
       seq($._primary_expr, $.selector),
       seq($._primary_expr, $.index),
       seq($._primary_expr, $.slice),
       seq($._primary_expr, $.arguments),
     ),
-    
+
     // Selector       = "." (identifier | simple_string_lit) .
-    selector: $ => seq(".", choice($.identifier, $._simple_string_lit)),
+    selector:  $ => seq(".", choice($.identifier, $.simple_string)),
     // Index          = "[" Expression "]" .
-    index: $ => seq("[", $._expression, "]"),
+    index:     $ => seq("[", $._expression, "]"),
     // TODO: missing in spec.md
-    slice: $ => seq("[", $._expression, ":", $._expression, "]"),
+    slice:     $ => seq("[", $._expression, ":", $._expression, "]"),
     // Argument       = Expression .
     _argument: $ => $._expression,
     // Arguments      = "(" [ ( Argument { "," Argument } ) [ "," ] ] ")" .
     arguments: $ => seq("(", commaSep($._argument), ")"),
-    
+
     // Expression = UnaryExpr | Expression binary_op Expression .
     _expression: $ => prec.left(choice($._unary_expr, seq($._expression, $._binary_op, $._expression))),
     // UnaryExpr  = PrimaryExpr | unary_op UnaryExpr .
     _unary_expr: $ => prec.right(choice($._primary_expr, seq($._unary_op, $._unary_expr))), // TODO: verify
-        
+
     // binary_op  = "|" | "&" | "||" | "&&" | "==" | rel_op | add_op | mul_op  .
     // add_op     = "+" | "-" .
     // mul_op     = "*" | "/" .
@@ -170,26 +168,26 @@ module.exports = grammar({
       prec.left(1, "|"),
     ),
     // rel_op     = "!=" | "<" | "<=" | ">" | ">=" | "=~" | "!~" .
-    _rel_op: $ => choice("==", "!=", "<", "<=", ">", ">=", "=~", "!~"),
+    _rel_op:    $ => choice("==", "!=", "<", "<=", ">", ">=", "=~", "!~"),
     // unary_op   = "+" | "-" | "!" | "*" | rel_op .
-    _unary_op: $ => choice("+", "-", "!", "*", $._rel_op),
+    _unary_op:  $ => choice("+", "-", "!", "*", $._rel_op),
 
     // Comprehension       = Clauses StructLit .
     comprehension: $ => seq($._clauses, $.struct),
 
     // Clauses             = StartClause { [ "," ] Clause } .
-    _clauses: $ => seq($._start_clause, repeat(seq(optional(","), $.clause))),
+    _clauses:      $ => seq($._start_clause, repeat(seq(optional(","), $.clause))),
     // StartClause         = ForClause | GuardClause .
     _start_clause: $ => choice($.for_clause, $.guard_clause),
     // Clause              = StartClause | LetClause .
-    clause: $ => choice($._start_clause, $.let_clause),
+    clause:        $ => choice($._start_clause, $.let_clause),
     // ForClause           = "for" identifier [ "," identifier ] "in" Expression .
-    for_clause: $ => seq("for", $.identifier, optional(seq(",", $.identifier)), "in", $._expression),
+    for_clause:    $ => seq("for", $.identifier, optional(seq(",", $.identifier)), "in", $._expression),
     // GuardClause         = "if" Expression .
-    guard_clause: $ => seq("if", $._expression),
+    guard_clause:  $ => seq("if", $._expression),
     // LetClause           = "let" identifier "=" Expression .
-    let_clause: $ => prec.right(seq("let", $.identifier, "=", $._expression)), // TODO: verify
-    
+    let_clause:    $ => prec.right(seq("let", $.identifier, "=", $._expression)), // TODO: verify
+
     _unicode_value: $ => {
       let escaped_char     = seq("\\", repeat(`#`), /(\'|\"|\\|\/|a|b|f|n|r|t|v)/)
       let little_u_value   = seq("\\", repeat(`#`), "u", /[0-9a-fA-F]{4}/)
@@ -200,24 +198,33 @@ module.exports = grammar({
 
     _newline: $ => token.immediate("\n"),
 
-    _simple_string_lit: $ => seq(`"`, repeat(choice($._unicode_value, $.interpolation)), `"`),
-
     interpolation: $ => seq("\\", repeat(`#`), "(", $._expression, ")"),
 
+    simple_string: $ => seq(`"`, repeat(choice($._unicode_value, $.interpolation)), `"`),
+
     string: $ => {
-      let octal_byte_value = seq("\\", repeat(`#`), /[0-7]{3}/)
-      let hex_byte_value   = seq("\\", repeat(`#`), "x", /[0-9a-fA-F]{2}/)
-
-      let byte_value    = token.immediate(choice(octal_byte_value, hex_byte_value))
-
-      let simple_bytes_lit = seq(`'`, repeat(choice($._unicode_value, $.interpolation, byte_value)), `'`)
-      let multiline_string_lit = seq(
+      let multiline_string = seq(
         `"""`,
         $._newline,
         repeat(choice($._unicode_value, $.interpolation, $._newline)),
         `"""`
       )
-      let multiline_bytes_lit = seq(
+
+      return choice(
+        alias($.simple_string, "simple"),
+        multiline_string,
+        seq(`#`, $.string, `#`)
+      )
+    },
+
+    bytes: $ => {
+      let octal_byte_value = token.immediate(seq("\\", repeat(`#`), /[0-7]{3}/))
+      let hex_byte_value   = token.immediate(seq("\\", repeat(`#`), "x", /[0-9a-fA-F]{2}/))
+
+      let byte_value = token.immediate(choice(octal_byte_value, hex_byte_value))
+
+      let simple_bytes = seq(`'`, repeat(choice($._unicode_value, $.interpolation, byte_value)), `'`)
+      let multiline_bytes = seq(
         `'''`,
         $._newline,
         repeat(choice($._unicode_value, $.interpolation, byte_value, $._newline)),
@@ -225,11 +232,9 @@ module.exports = grammar({
       )
 
       return choice(
-         $._simple_string_lit,
-         multiline_string_lit,
-         simple_bytes_lit,
-         multiline_bytes_lit,
-         seq(`#`, $.string, `#`)
+        simple_bytes,
+        multiline_bytes,
+        seq(`#`, $.bytes, `#`)
       )
     },
 
@@ -275,17 +280,17 @@ module.exports = grammar({
     true: $ => "true",
     false: $ => "false",
     null: $ => "null",
-    
+
     // https://github.com/tree-sitter/tree-sitter-javascript/blob/master/grammar.js    
     // http://stackoverflow.com/questions/13014947/regex-to-match-a-c-style-multiline-comment/36328890#36328890
-    comment: $ => token(choice(
-      seq('//', /.*/),
+    comment: $ => token(prec(-1, choice(
+      seq('//', /.*/, '\n'),
       seq(
         '/*',
         /[^*]*\*+([^/*][^*]*\*+)*/,
         '/'
       )
-    )),
+    ))),
 
     _kw_builtin_function: $ => choice(
       "len",

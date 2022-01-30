@@ -20,7 +20,7 @@ Simple bytes
 ---
 
 (source_file
-  (string (interpolation
+  (bytes (interpolation
     (identifier)
     (selector (identifier)))))
 
@@ -50,7 +50,7 @@ hello, \#(w.world)!
 ---
 
 (source_file
-  (string (string (interpolation
+  (bytes (bytes (interpolation
     (identifier)
     (selector (identifier))))))
 
@@ -124,13 +124,45 @@ test: {
     (struct
       (field
         (label (label_name (identifier)))
-        (string
+        (bytes
           (interpolation
             (identifier)
             (selector (identifier)))))
       (field
         (label (label_name (identifier)))
-        (string
+        (bytes
           (interpolation
             (identifier)
             (selector (identifier))))))))
+
+===================
+Comments
+===================
+
+urls: [
+  "https://cuelang.org/",
+  "http://\(100 + 20 + 7).0.0.1/",
+]
+
+links: "https://cuelang.org/": [
+  "/docs",
+  "https://github.com/cue-lang/cue/releases"
+]
+
+---
+
+(source_file
+  (field
+    (label (label_name (identifier)))
+    (list
+      (string)
+      (string (interpolation
+        (number)
+        (number)
+        (number)))))
+  (field
+    (label (label_name (identifier)))
+    (label (label_name (simple_string)))
+    (list
+      (string)
+      (string))))

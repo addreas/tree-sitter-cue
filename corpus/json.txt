@@ -25,7 +25,7 @@ Lists
   (false)
   (struct 
     (field 
-      (label (label_name))
+      (label (label_name (simple_string)))
       (string)))))
 
 =====================
