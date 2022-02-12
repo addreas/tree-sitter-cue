@@ -108,6 +108,7 @@ module.exports = grammar({
       $.bytes,
       $.null,
       $._bool_lit,
+      $.top,
       $.bottom,
       $.list,
       $.struct
@@ -272,10 +273,11 @@ module.exports = grammar({
       ))
     },
 
-    identifier: $ => /(#|_#)?\p{L}(\p{L}|\p{Nd})*/,
+    identifier: $ => /(#|_#|_)?\p{L}(\p{L}|\p{Nd}|_)*/,
 
     _bool_lit: $ => choice($.true, $.false),
 
+    top: $ => "_",
     bottom: $ => "_|_",
     true: $ => "true",
     false: $ => "false",

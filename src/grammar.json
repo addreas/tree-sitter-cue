@@ -741,6 +741,10 @@
         },
         {
           "type": "SYMBOL",
+          "name": "top"
+        },
+        {
+          "type": "SYMBOL",
           "name": "bottom"
         },
         {
@@ -2161,7 +2165,7 @@
     },
     "identifier": {
       "type": "PATTERN",
-      "value": "(#|_#)?\\p{L}(\\p{L}|\\p{Nd})*"
+      "value": "(#|_#|_)?\\p{L}(\\p{L}|\\p{Nd}|_)*"
     },
     "_bool_lit": {
       "type": "CHOICE",
@@ -2175,6 +2179,10 @@
           "name": "false"
         }
       ]
+    },
+    "top": {
+      "type": "STRING",
+      "value": "_"
     },
     "bottom": {
       "type": "STRING",

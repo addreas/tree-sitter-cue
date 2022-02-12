@@ -64,6 +64,10 @@
           "named": true
         },
         {
+          "type": "top",
+          "named": true
+        },
+        {
           "type": "true",
           "named": true
         }
@@ -219,6 +223,10 @@
           "named": true
         },
         {
+          "type": "top",
+          "named": true
+        },
+        {
           "type": "true",
           "named": true
         }
@@ -298,6 +306,10 @@
           "named": true
         },
         {
+          "type": "top",
+          "named": true
+        },
+        {
           "type": "true",
           "named": true
         }
@@ -369,6 +381,10 @@
           "named": true
         },
         {
+          "type": "top",
+          "named": true
+        },
+        {
           "type": "true",
           "named": true
         }
@@ -437,6 +453,10 @@
         },
         {
           "type": "struct",
+          "named": true
+        },
+        {
+          "type": "top",
           "named": true
         },
         {
@@ -569,6 +589,10 @@
           "named": true
         },
         {
+          "type": "top",
+          "named": true
+        },
+        {
           "type": "true",
           "named": true
         }
@@ -637,6 +661,10 @@
         },
         {
           "type": "struct",
+          "named": true
+        },
+        {
+          "type": "top",
           "named": true
         },
         {
@@ -712,6 +740,10 @@
         },
         {
           "type": "struct",
+          "named": true
+        },
+        {
+          "type": "top",
           "named": true
         },
         {
@@ -805,6 +837,10 @@
           "named": true
         },
         {
+          "type": "top",
+          "named": true
+        },
+        {
           "type": "true",
           "named": true
         }
@@ -881,6 +917,10 @@
         },
         {
           "type": "struct",
+          "named": true
+        },
+        {
+          "type": "top",
           "named": true
         },
         {
@@ -1034,6 +1074,10 @@
           "named": true
         },
         {
+          "type": "top",
+          "named": true
+        },
+        {
           "type": "true",
           "named": true
         }
@@ -1130,6 +1174,10 @@
         },
         {
           "type": "struct",
+          "named": true
+        },
+        {
+          "type": "top",
           "named": true
         },
         {
@@ -1240,6 +1288,10 @@
         },
         {
           "type": "struct",
+          "named": true
+        },
+        {
+          "type": "top",
           "named": true
         },
         {
@@ -1483,11 +1535,11 @@
   },
   {
     "type": "number",
-    "named": false
+    "named": true
   },
   {
     "type": "number",
-    "named": true
+    "named": false
   },
   {
     "type": "or",
@@ -1512,6 +1564,10 @@
   {
     "type": "string",
     "named": false
+  },
+  {
+    "type": "top",
+    "named": true
   },
   {
     "type": "true",

@@ -1,0 +1,24 @@
+========
+Fields
+========
+
+simple: _
+_hidden: _
+#definition: _
+"simple-string": _
+
+--------
+
+(source_file
+  (field
+    (label (label_name (identifier)))
+    (top))
+  (field
+    (label (label_name (identifier)))
+    (top))
+  (field
+    (label (label_name (identifier)))
+    (top))
+  (field
+    (label (label_name (simple_string)))
+    (top)))
